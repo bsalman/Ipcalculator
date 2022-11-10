@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IP Calculator</title>
+</head>
+<style>
+    .table {
+        font-family: Arial, Helvetica, sans-serif;
+        border-collapse: collapse;
+        width: 100%;
+      }
+      
+      .table td, .table th {
+        border: 1px solid #ddd;
+        padding: 8px;
+      }
+      
+      .table tr:nth-child(even){background-color: #f2f2f2;}
+      
+      .table tr:hover {background-color: #ddd;}
+      
+      .table th {
+        width:15%;
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: #535458;
+        color: white;
+      }
+      input[type=text] {
+        width:35%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+      input[type=number] {
+        width:10%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+      button{
+        width: 10%;
+        background-color: #04AA6D;
+        color: white;
+        padding: 14px 20px;
+        margin: 8px 0;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      button:hover{
+        background-color: #45a049;
+      }
+      .subnets{
+        width: 50%;
+      }
+      .form{
+        display: flex;
+
+      }
+    
+      
+</style>
+<body>
+    <div class="container">
+        <div class=" input_container">
+            <span>IP</span>
+            <input type="text" name="ip" id="ip" value="192.168.1.0">
+            /
+            <input type="number" name="suf" id="sufik" max="30" min="0" value="24"> 
+            <br>
+           <label name="nets" >How many Nets</label>
+            <input type="number" name="suf" id="nets" max="30" min="0" value=""> 
+            <button id="netNum">click</button>
+           <br>
+           
+           <div id = "form">
+           </div>
+           
+        </div>
+
+        <button id="btn">Calculate</button>
+
+        <table class="table" id="table">
+        <tr id="host">
+            <th> Hosts </th>
+            <td></td>    
+        </tr>
+        <tr id ="ipBin">
+            <th >Ip Binary</th>
+            <td></td>   
+        </tr>
+        <tr id="netAdd" >
+            <th >Net address</th>
+            <td></td> 
+        </tr>
+        <tr id="netMask" >
+            <th > Netmask Binary</th>
+            <td></td>
+        </tr>
+        <tr id="netMaskBin" >
+            <th >Netmask</th>
+            <td></td>
+            
+        </tr>
+        <tr id="broadcast">
+            <th >Broadcast</th>
+            <td></td>
+        </tr>
+        
+        </table>
+        <br>
+        <div class="resultContainer">
+          
+        </div>
+    </div>
+    
+    <script src="./appNew.js"></script>
+</body>
+</html>

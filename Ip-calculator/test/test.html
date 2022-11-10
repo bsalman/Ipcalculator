@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!--Call the Javascript File-->
+    <img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-wp-preserve="%3Cscript%20src%3D%22theScript.js%22%3E%3C%2Fscript%3E" data-mce-resize="false" data-mce-placeholder="1" class="mce-object" width="20" height="20" alt="&lt;script&gt;" title="&lt;script&gt;" />
+    <title>IP Subnet Calculator</title>
+ 
+</head>
+<body>
+    <form>
+         
+        <h2>IP Subnet Calculator</h2>
+    <ul>
+         <li>
+         <label><strong>IP Address (Host)</strong></label>
+    <div> 
+       
+         <input type="text" name="field1" class="field-style field-full align-none" id="getIp" placeholder="" >
+    </div>     
+       
+        </li>
+    
+        
+ 
+        
+ <hr class="style2">   
+         
+         
+        <li>
+             
+           <p style="color:blue;"><strong>Subnet Mask:</strong>
+                            <select id="slct2" name="slct2" style="text-align:center; margin-left: 10px;" onchange="ipMask(this.id)">
+                                      <option value=""></option>
+                                      <option value= "1">255.255.255.255 / 32</option>
+                                      <option value= "2">255.255.255.254 / 31</option>
+                                      <option value= "3">255.255.255.252 / 30</option>
+                                      <option value= "4">255.255.255.248 / 29</option>
+                                      <option value= "5">255.255.255.240 / 28</option>
+                                      <option value= "6">255.255.255.224 / 27</option>
+                                      <option value= "7">255.255.255.192 / 26</option>
+                                      <option value= "8">255.255.255.128 / 25</option>
+                                      <option value= "9">255.255.255.0 / 24</option>
+                                      <option value= "10">255.255.254.0 / 23</option>
+                                      <option value= "11">255.255.252.0 / 22</option>
+                                      <option value= "12">255.255.248.0 / 21</option>
+                                      <option value= "13">255.255.240.0 / 20</option>
+                                      <option value= "14">255.255.224.0 / 19</option>
+                                      <option value= "15">255.255.192.0 / 18</option>
+                                      <option value= "16">255.255.128.0 / 17</option>
+                                      <option value= "17">255.255.0.0 / 16</option>
+                                      <option value= "18">255.254.0.0 / 15</option>
+                                      <option value= "19">255.252.0.0 / 14</option>
+                                      <option value= "20">255.248.0.0 / 13</option>
+                                      <option value= "21">255.240.0.0 / 12</option>
+                                      <option value= "22">255.224.0.0 / 11</option>
+                                      <option value= "23">255.192.0.0 / 10</option>
+                                      <option value= "24">255.128.0.0 / 9</option>
+                                      <option value= "25">255.0.0.0 / 8</option>
+                                      <option value= "26">254.0.0.0 / 7</option>
+                                      <option value= "27">252.0.0.0 / 6</option>
+                                      <option value= "28">248.0.0.0 / 5</option>
+                                      <option value= "29">240.0.0.0 / 4</option>
+                                      <option value= "30">224.0.0.0 / 3</option>
+                                      <option value= "31">192.0.0.0 / 2</option>
+                                      <option value= "32">128.0.0.0 / 1</option>
+                                       
+                                      
+                                       
+                                </select> 
+                              
+             
+             
+             
+             
+             
+             
+             
+         
+        </li>
+             
+     <hr class="style2">         
+             
+          
+            
+         
+      
+      
+      <li>
+           
+            <input type="button" value="Calculate" id="" onclick="calculateOrigin();"/>      
+     </li>
+         
+        <hr>
+      <h3 id="ipDisplay"><strong></strong> </h3> 
+      <h3 id="subnetDisplay"><strong></strong> </h3> 
+      <h3 id="wildDisplay"><strong></strong> </h3> 
+      <h3 id="networkDisplay"><strong></strong> </h3> 
+      <h3 id="broadDisplay"><strong></strong> </h3> 
+      <h3 id="subnetnumDisplay"><strong></strong> </h3> 
+      <h3 id="hostDisplay"><strong></strong> </h3> 
+      <h3 id="firstIpDisplay"><strong></strong> </h3> 
+      <h3 id="lastIpDisplay"><strong></strong> </h3> 
+     
+     </ul>
+    </form>
+ 
+ 
+ 
+ 
+ 
+ 
+     <script src="./test2.js"></script>
+</body>
+</html>
