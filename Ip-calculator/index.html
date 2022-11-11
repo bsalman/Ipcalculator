@@ -7,10 +7,26 @@
     <title>Calculator</title>
 </head>
 <style>
+  body{
+    background-color: rgb(17, 17, 17);
+  }
+    .container{
+      width: 100%;
+      background-color: rgb(17, 17, 17);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    .subCont{
+      width: 100%;
+      height: auto;
+    }
     .table {
         font-family: Arial, Helvetica, sans-serif;
         border-collapse: collapse;
-        width: 100%;
+        width: 60%;
       }
       
       .table td, .table th {
@@ -18,26 +34,28 @@
         padding: 8px;
       }
       
-      .table tr:nth-child(even){background-color: #f2f2f2;}
+      .table tr:nth-child(even){background-color: #7c7a7a;}
       
-      .table tr:hover {background-color: #ddd;}
+      .table tr:hover {background-color: rgb(165, 162, 162);}
       
       .table th {
         width:15%;
         padding-top: 12px;
         padding-bottom: 12px;
         text-align: left;
-        background-color: #535458;
+        background-color: #474545;;
         color: white;
       }
       input[type=text] {
-        width:35%;
-        padding: 12px 20px;
-        margin: 8px 0;
+        width:25%;
+        padding: 10px 20px;
+        margin: 10px ;
         display: inline-block;
         border: 1px solid #ccc;
         border-radius: 4px;
         box-sizing: border-box;
+        background-color:#7c7a7a;;
+        color: #fff;
       }
       input[type=number] {
         width:10%;
@@ -47,10 +65,12 @@
         border: 1px solid #ccc;
         border-radius: 4px;
         box-sizing: border-box;
+        background-color: #7c7a7a;;
+        color: #fff;
       }
       button{
         width: 10%;
-        background-color: #04AA6D;
+        background-color: #535458;
         color: white;
         padding: 14px 20px;
         margin: 8px 0;
@@ -59,7 +79,7 @@
         cursor: pointer;
       }
       button:hover{
-        background-color: #45a049;
+        background-color: #89898b;
       }
       .subnets{
         width: 50%;
@@ -73,6 +93,9 @@
 </style>
 <body>
     <div class="container">
+      <div class="subCont" >
+
+      
         <div class=" input_container">
             <span>IP</span>
             <input type="text" name="ip" id="ip" value="192.168.1.0">
@@ -91,38 +114,39 @@
         <button id="btn">Calculate</button>
 
         <table class="table" id="table">
-        <tr id="host">
-            <th> available Hosts </th>
-            <td></td>    
-        </tr>
-        <tr id ="subMask">
-          <th> Sub masks </th>
-            <td></td>
-        </tr>
-        <tr id ="ipBin">
-            <th >Ip Binary</th>
-            <td></td>   
-        </tr>
-        <tr id="netAdd" >
-            <th >Net address</th>
-            <td></td> 
-        </tr>
-        <tr id="netMask" >
-            <th > Netmask Binary</th>
-            <td></td>
-        </tr>
-        <tr id="netMaskBin" >
-            <th >Netmask Decimal</th>
-            <td></td>  
-        </tr>
-        <tr id="broadcast">
-            <th >Broadcast</th>
-            <td></td>
-        </tr>
+            <tr id ="ipBinary">
+              <th> Ip Binary </th>
+                <td></td>
+            </tr>
+            <tr id="host">
+                <th> available Hosts </th>
+                <td></td>    
+            </tr>
+            <tr id ="subMaskDec">
+              <th> Submasks </th>
+                <td></td>
+            </tr>
+            <tr id="netMaskBin" >
+              <th >SubMask Binary</th>
+              <td></td>  
+          </tr>
+            <tr id ="netId">
+                <th > Net Id Decimal </th>
+                <td></td>   
+            </tr>
+            <tr id="netAddBin" >
+                <th >Binary Net address</th>
+                <td></td> 
+            </tr>
+            <tr id="broadcast">
+                <th >Broadcast</th>
+                <td></td>
+            </tr>
         </table>
         <br>
         <div class="resultContainer">
         </div>
+      </div>
     </div>
     
     <script src="./app.js"></script>

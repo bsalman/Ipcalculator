@@ -55,6 +55,8 @@ const convertFullBinary =(array)=>{
 // let test = convertFullIpToDecimal(["11000000","10101000","00000001","00000000"])
 // console.log('convertFullIpToDecimal',test);
 
+
+// console.log(convertFullBinary([192, 168, 2, 0]));
 /***********************************************************
   * create the replaced part from the Binary number
  * this function used just for Sub Net mask  function because it generate 8 number starting form right to left with 0 and 1
@@ -156,10 +158,10 @@ const netAddressCalculate = (ip, SubMask) => {
     }
   })
 
-  const netAddressBinary = convertFullIpToDecimal(netAddress)
+  const netAddressDecimal = convertFullIpToDecimal(netAddress)
 
   return {
-          netAddressBinary,
+          netAddressDecimal,
           netAddress
           }
 }
@@ -187,11 +189,13 @@ const broadcastCalc = (idBinary, suFix) => {
       resultObj.lastIndexOf = element.lastIndexOf('0');
       resultArray.push(resultObj)
     })
-    console.log(resultArray);
+    
     resultArray.forEach(obj=>{
 
       if (obj.octNum === 0) {
+
         broadcasts.push(idBinary[0]);
+
       }
       if (obj.octNum === 1 && obj.firstIndex === -1){
         broadcasts.push(idBinary[1]);
@@ -315,12 +319,12 @@ sufList.forEach((sufObj, idx, sufList) => {
   }
   });
     // console.log('subNetRangeArray',subNetRangeArray);
-// starting to divide the main Net  to  Sub nets
-    let firstNetAddress = MainnetAddress
-   for (let i = 0; i < subNetRangeArray.length; i++) {
-    // console.log(hostCounter);
+    // starting to divide the main Net  to  Sub nets
+  let firstNetAddress = MainnetAddress
+  for (let i = 0; i < subNetRangeArray.length; i++) {
+
     /**
-     * my functions :
+     * neded functions :
      *  1- nextNetIpAddress(broadcast,suffix)
      *
      * 2- broadcastCalc(idBinary, suFix)
@@ -334,52 +338,81 @@ sufList.forEach((sufObj, idx, sufList) => {
                   netName: null,
                   suffix: null,
                   netId:null,
-                  broadcast:null,
-                  nextNetAddress :null,
-                  host:null
+                  broadcastDisemal:null,
+                  broadcastBinary:null,
+                  nextNetAddressBin: null,
+                  nextNetaddresseDisemal:null,
+                  host: null,
+                  subMask:null
       }
-      console.log();
-
     if(NetObjArray.indexOf(NetObjArray[i-1]) !==-1){
-      console.log('hi',i);
-      let newNetObjArray =[...NetObjArray]
-      let newNetAdd =newNetObjArray[i-1].nextNetAddress.nextNetIpAddress1
-     
-      let broadcast = broadcastCalc(newNetAdd, subNetRangeArray[i].s);
-      console.log(broadcast.broadcastArr);
-      NetObj.broadcast=broadcast.broadcastArr;
+      console.log('first condition');
 
-      let subMask = getSubNetMask(subNetRangeArray[i].s).maskArr;
-      let netIdAddress = netAddressCalculate(firstNetAddress,subMask);
-      NetObj.netId=netIdAddress.netAddressBinary;
+      let newNetObjArray = [...NetObjArray]
+      // assine the Net Address values to Net object
+      let newNetAddBinary = newNetObjArray[i - 1].nextNetAddressBin;
+      let newNetAddDisemal = newNetObjArray[i - 1].nextNetaddresseDisemal;   
+      NetObj.netId = newNetAddDisemal;
+     // assine the Broadcast values to Net object
+      let broadcastBinary = broadcastCalc(newNetAddBinary, subNetRangeArray[i].s).broadcasts;
+      let broadcastDisemal = broadcastCalc(newNetAddBinary, subNetRangeArray[i].s).broadcastArr;
+      NetObj.broadcastBinary = broadcastBinary;
+      NetObj.broadcastDisemal = broadcastDisemal;
+      // assine the subMask values to Net object
+      let subMaskDismal = getSubNetMask(subNetRangeArray[i].s).SubMask;
+      let submaskeBinary = getSubNetMask(subNetRangeArray[i].s).maskArr;
+      NetObj.subMask = subMaskDismal;
+     // assine the nextNetIp values to Net object
+      let nextNetAddressBin = nextNetIpAddress(broadcastBinary, subNetRangeArray[i].s).nextNetIpAddress1;
+    
+     let nextNetaddresseDisemal = nextNetIpAddress(broadcastBinary, subNetRangeArray[i].s).nextNetIpAddressDis;
+     NetObj.nextNetAddressBin = nextNetAddressBin;
+     NetObj.nextNetaddresseDisemal = nextNetaddresseDisemal;
+    // assine the Net Name  value  to Net object
+      NetObj.netName = subNetRangeArray[i].n;
+      // assine the suffix number value  to Net object
+      NetObj.suffix = subNetRangeArray[i].s;
+ 
+      // NetObj.nextNetaddresseDisemal = nextNetIp;
+      NetObj.host = subNetRangeArray[i].h;
+    //   // push thoe net object to the NetObjArray
+       NetObjArray.push(NetObj)
 
-      let nextNetIp= nextNetIpAddress(broadcast.broadcasts,subNetRangeArray[i].s);
-      NetObj.nextNetAddress=nextNetIp
-      NetObjArray.push(NetObj)
     }else{
-     
-      let broadcast = broadcastCalc(firstNetAddress, subNetRangeArray[i].s);
-      let subMask = getSubNetMask(subNetRangeArray[i].s).maskArr;
-      let netIdAddress = netAddressCalculate(firstNetAddress,subMask);
-      let nextNetIp= nextNetIpAddress(broadcast.broadcasts,subNetRangeArray[i].s);
-      console.log(nextNetIp.nextNetIpAddress1);
-      // NetObjArray
-      
+      console.log('else');
       NetObj.netName=subNetRangeArray[i].n;
-      NetObj.suffix= subNetRangeArray[i].s
-      NetObj.netId=netIdAddress.netAddressBinary
-      NetObj.broadcast=broadcast.broadcastArr
-      NetObj.nextNetAddress=nextNetIp
-      NetObj.host=subNetRangeArray[i].h
-      NetObjArray.push(NetObj)
+      NetObj.suffix = subNetRangeArray[i].s;
+      NetObj.host = subNetRangeArray[i].h;
+      // assine the subMask values to Net object
+      let subMaskDismal = getSubNetMask(subNetRangeArray[i].s).SubMask;
+      let submaskeBinary = getSubNetMask(subNetRangeArray[i].s).maskArr;
+      NetObj.subMask = subMaskDismal;
+       // assine the Net Address values to Net object
+      let netIdAddressBinary = netAddressCalculate(firstNetAddress, submaskeBinary).netAddress;
+      let netIdAddressDismal = netAddressCalculate(firstNetAddress, submaskeBinary).netAddressDecimal;
+      NetObj.netId = netIdAddressDismal;
+      // assine the Broadcast values to Net object
+      let broadcastDisemal = broadcastCalc(firstNetAddress, subNetRangeArray[i].s).broadcastArr;
+      let broadcastBinary = broadcastCalc(firstNetAddress, subNetRangeArray[i].s).broadcasts;
+      NetObj.broadcastDisemal = broadcastDisemal;
+      NetObj.broadcastBinary = broadcastBinary;
+      
+      // assine the nextNetIp  values to Net object
+      let nextNetAddressBin = nextNetIpAddress(broadcastBinary, subNetRangeArray[i].s).nextNetIpAddress1;
+      let nextNetaddresseDisemal = nextNetIpAddress(broadcastBinary, subNetRangeArray[i].s).nextNetIpAddressDis;
+      NetObj.nextNetAddressBin = nextNetAddressBin;
+      NetObj.nextNetaddresseDisemal = nextNetaddresseDisemal;
+       // push thoe net object to the NetObjArray
+      NetObjArray.push(NetObj);
+
     }
     }
-    console.log('hhh',NetObjArray);
+    
      lastResultArray =NetObjArray
     return lastResultArray
 }
 
-let obj1 = [{netNum:1,netName:'s',hostNum:99},{netNum:2,netName:'z',hostNum:1},{netNum:3,netName:'a',hostNum:25}];
+let obj1 = [{netNum:1,netName:'s',hostNum:500},{netNum:2,netName:'z',hostNum:1},{netNum:3,netName:'a',hostNum:25}];
 let subNetsNumSort = obj1 .sort((a, b) => {
   if (a.hostNum < b.hostNum) {
     return 1;
@@ -389,7 +422,7 @@ let subNetsNumSort = obj1 .sort((a, b) => {
   }
   return 0;
 });
-getSubNets(obj1,hostSuffixList(24),['11000000', '10101000', '00000001', '00000000'])
+// getSubNets(obj1,hostSuffixList(16),['11000000', '10101000', '00000001', '00000000'])
 
 // /////////////////////////////////////////////////
 // / functions end
@@ -439,14 +472,23 @@ netsNumberBtn.addEventListener('click', (e) => {
 
 btn.addEventListener('click', (e) => {
   e.preventDefault;
+ 
+  
+  //select Ip input and Suffix input  
+   
   const ipInput = document.querySelector('#ip');
   const sufInput = document.querySelector('#sufik')
 
-  let ip = ipInput.value.split('.');
-  console.log(ip);
-  let ipBinaryInput = convertFullBinary(ip)
+
+
+  let ipInputValue = ipInput.value.split('.');
+  let idBinary = [];
+  let y;
+  ipInputValue.forEach(element => {
+    y = convertToBinary(element)
+    idBinary.push(y)
+  });
   let suFix = sufInput.value;
-  console.log(suFix);
   let availableHost = Math.pow(2, 32 - suFix) - 2;
   let freiBit = 32 - suFix;
 /**
@@ -462,129 +504,132 @@ btn.addEventListener('click', (e) => {
      * 5-getSubNets(subNetsNum, sufList, MainnetAddress)
      */
   ;
-  let MainNetAddress = netAddressCalculate(ipBinaryInput, getSubNetMask(suFix).maskArr).netAddressBinary
-  console.log(MainNetAddress);
-  let mainBroadcast = broadcastCalc(ipBinaryInput, suFix, availableHost);
-  console.log(mainBroadcast);
+  
+  let MainNetAddress = netAddressCalculate(idBinary, getSubNetMask(suFix).maskArr).netAddressDecimal;
+  let MainNetAddressBin = netAddressCalculate(idBinary, getSubNetMask(suFix).maskArr).netAddress;
+  console.log(MainNetAddressBin);
+  let mainBroadcast = broadcastCalc(idBinary, suFix).broadcastArr;
   let MainHosts = getSubNetMask(suFix).hostNumber
-  console.log(MainHosts);
   let MainNetMaskOutput = getSubNetMask(suFix).SubMask;
-  console.log(MainNetMaskOutput);
-
-  let mainNetObj = {
-          hosts:availableHost,
-          Ip:ip,
-          ipBinary:ipBinaryInput,
-          netAddress:'',
-          NetMask:'',
-          NetMaskBinary:'',
-          broadcast: '',
+  let mainSubMasksBinary = getSubNetMask(suFix).maskArr;
+  const mainNetObj = {
+    hosts:MainHosts,
+    Ip:ipInput.value.trim,
+    ipBinary:idBinary,
+    netAddress: MainNetAddress,
+    netAddBin:MainNetAddressBin,
+    NetMask:MainNetMaskOutput,
+    NetMaskBinary:mainSubMasksBinary,
+    broadcast:mainBroadcast,
   }
- 
-  //hosts output
-  const hostOutput = document.querySelector('#host').children.item(1);
-  hostOutput.innerHTML = mainNetObj.hosts
-  //subMask
-  const subMask = document.querySelector('#subMask').children.item(1);
-  hostOutput.innerHTML = mainNetObj.hosts
-  // IpBinary Output
-  const ipBinary = document.querySelector('#ipBin').children.item(1);
+    //Ip Binary output ipBinary
+    const ipBinary = document.querySelector('#ipBinary').children.item(1);
   ipBinary.innerHTML = mainNetObj.ipBinary;
-  //Net Address Output
-  const netAddOutput = document
-    .querySelector('#netAdd').children.item(1);
-  netAddOutput.innerHTML = mainNetObj.netAddress;
+   //hosts output
+   const hostOutput = document.querySelector('#host').children.item(1);
+   hostOutput.innerHTML = mainNetObj.hosts
+   //subMask  output
+   const subMaskDec = document.querySelector('#subMaskDec').children.item(1);
+   subMaskDec.innerHTML = mainNetObj.NetMask
+   // IpBinary Output
+   const netMaskBin = document.querySelector('#netMaskBin').children.item(1);
+   netMaskBin.innerHTML = mainNetObj.NetMaskBinary;
+   //Net Address Output
 
-  const netMaskBin = document.querySelector('#netMaskBin').children.item(1);
-  netMaskBin.innerHTML = mainNetObj.NetMaskBinary;
-  // Net Masks   output
-  const netMask = document.querySelector('#netMask').children.item(1);
-  netMask.innerHTML = mainNetObj.NetMask;
-  // Broadcast output
-  const broadcastOutput = document.querySelector('#broadcast').children.item(1);
-  broadcastOutput.innerHTML = mainNetObj.broadcast;
+   const netId = document.querySelector('#netId').children.item(1);
+   netId.innerHTML = mainNetObj.netAddress;
+   // Net Masks   output
+   const netAddBin = document.querySelector('#netAddBin').children.item(1);
+   netAddBin.innerHTML = mainNetObj.netAddBin;
+   // Broadcast output
+   const broadcastOutput = document.querySelector('#broadcast').children.item(1);
+   broadcastOutput.innerHTML = mainNetObj.broadcast;
+ 
+
 
   if(form.children){
-    let subNetsNum=[]
-    for (let index = 0; index < form.children.length; index++) {
-      let inPutObj ={
-      netName: form.children.item(index).children.item(1).value,
-      netsNum: index + 1,
-      hostNum: form.children.item(index).children.item(3).value
+      let subNetsNum=[]
+      for (let index = 0; index < form.children.length; index++) {
+        let inPutObj ={
+        netName: form.children.item(index).children.item(1).value,
+        netsNum: index + 1,
+        hostNum: form.children.item(index).children.item(3).value
+        }
+        subNetsNum.push(inPutObj)
       }
-      subNetsNum.push(inPutObj)
-    }
+    
+      let mainIp = {
+          ip:idBinary,
+          suffix: Number(sufInput.value)
+      }
 
-  let mainIp = {
-     ip:ipBinaryInput,
-      suffix: Number(sufInput.value)
-  }
-
-  let subNetsNumSort = subNetsNum.sort((a, b) => {
-    if (a.hostNum < b.hostNum) {
-      return 1;
-    }
-    if (a.hostNum > b.hostNum) {
-      return -1;
-    }
-    return 0;
-  });
+      let subNetsNumSort = subNetsNum.sort((a, b) => {
+        if (a.hostNum < b.hostNum) {
+          return 1;
+        }
+        if (a.hostNum > b.hostNum) {
+          return -1;
+        }
+        return 0;
+      });
 
 
-  const calculationResult = getSubNets(subNetsNumSort, hostSuffixList(mainIp.suffix),mainIp.ip );
-  calculationResult.forEach(element=>{
+    const calculationResult = getSubNets(subNetsNumSort, hostSuffixList(mainIp.suffix), mainIp.ip);
+    console.log(calculationResult);
+    
+      calculationResult.forEach(element=>{
 
-    const netName = document.createElement("th")
-    netName.classList.add('netName')
-    netName.innerText = 'subNet Name :'
-    const netNameResult =document.createElement("td")
-    netNameResult.innerText = element.netName
+      const netName = document.createElement("th")
+      netName.classList.add('netName')
+      netName.innerText = 'subNet Name :'
+      const netNameResult =document.createElement("td")
+      netNameResult.innerText = element.netName
 
-    const host =document.createElement("th")
-    host.innerText = 'Hosts Number :'
-    const hostResult =document.createElement("td")
-    hostResult.innerHTML = element.host
-    const suffix =document.createElement("th")
-    suffix.innerText = 'suffix Number :'
-    const suffixResult =document.createElement("td")
-    suffixResult.innerHTML = element.suffix
-    const NetId =document.createElement("th")
-    NetId.innerText = 'Net address :'
-    const NetIdResult =document.createElement("td")
-    NetIdResult.innerHTML = element.netId
-    const BroadCast =document.createElement("th")
-    BroadCast.innerText = 'BroadCast : '
-    const BroadcastResult =document.createElement("td")
-    BroadcastResult.innerHTML = element.broadcast
-    let tr1 = document.createElement("tr")
-    let tr2 = document.createElement("tr")
+      const host =document.createElement("th")
+      host.innerText = 'Hosts Number :'
+      const hostResult =document.createElement("td")
+      hostResult.innerHTML = element.host
+      const suffix =document.createElement("th")
+      suffix.innerText = 'suffix Number :'
+      const suffixResult =document.createElement("td")
+      suffixResult.innerHTML = element.suffix
+      const NetId =document.createElement("th")
+      NetId.innerText = 'Net address :'
+      const NetIdResult =document.createElement("td")
+      NetIdResult.innerHTML = element.netId
+      const BroadCast =document.createElement("th")
+      BroadCast.innerText = 'BroadCast : '
+      const BroadcastResult =document.createElement("td")
+      BroadcastResult.innerHTML = element.broadcastDisemal
+      let tr1 = document.createElement("tr")
+      let tr2 = document.createElement("tr")
 
-    const subNetItem =document.createElement("table")
-    subNetItem.classList.add('subNetItem');
-    subNetItem.classList.add('table');
+      const subNetItem =document.createElement("table")
+      subNetItem.classList.add('subNetItem');
+      subNetItem.classList.add('table');
 
-    const resultContainer = document.querySelector('.resultContainer')
+      const resultContainer = document.querySelector('.resultContainer')
 
-    resultContainer.append(subNetItem)
-    subNetItem.append(tr1);
-    subNetItem.append(tr2);
-    tr1.append(netName);
-    tr2.append(netNameResult);
+      resultContainer.append(subNetItem)
+      subNetItem.append(tr1);
+      subNetItem.append(tr2);
+      tr1.append(netName);
+      tr2.append(netNameResult);
 
-    tr1.append(host);
-    tr2.append(hostResult);
+      tr1.append(host);
+      tr2.append(hostResult);
 
-    tr1.append(suffix);
-    tr2.append(suffixResult);
-    tr1.append(NetId);
-    tr2.append(NetIdResult);
+      tr1.append(suffix);
+      tr2.append(suffixResult);
+      tr1.append(NetId);
+      tr2.append(NetIdResult);
 
-    tr1.append(BroadCast);
-    tr2.append(BroadcastResult);
+      tr1.append(BroadCast);
+      tr2.append(BroadcastResult);
 
 
 
-  })
+      })
 
   }
 
