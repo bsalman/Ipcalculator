@@ -28,7 +28,6 @@ function convertToBinary(x) {
 const ToBinary = (decimal) => {
   return decimal.toString(2)
 }
-
 /*********************************************************
  * function convert number from Binary to decimal
  * depend on parsInt() method
@@ -40,6 +39,14 @@ const convertToDecimal = (text) => {
   let bin = parseInt(text, 2);
   return bin
 };
+
+const convertHexToDec = (hex) =>{
+  let des = parseInt(hex, 16);
+  console.log(des);
+  return des
+}
+convertHexToDec('F')
+
 /**
  *
  * @param {*} array
@@ -48,6 +55,8 @@ const convertToDecimal = (text) => {
   let FullIpToDecimal= array.map(element=> convertToDecimal(element))
   return FullIpToDecimal
 }
+
+
 const convertFullBinary =(array)=>{
   let FullIpToBinary= array.map(element=> ToBinary(element))
   return FullIpToBinary
@@ -298,25 +307,23 @@ const getSubNets = (subNetsNum, sufList, MainnetAddress) => {
   let lastResultArray =[] ;
   let binaryMainNetAddress = MainnetAddress.map(element=>convertToDecimal(element))
   console.log('sufList',sufList);
-// looping  sufLIST ARRAY to create an array of net Object told subNetRangeArray
-sufList.forEach((sufObj, idx, sufList) => {
-  if (sufList[idx + 1]) {
-    subNetsNum.forEach((subNetObj) => {
-      if (sufObj.h >= subNetObj.hostNum && subNetObj.hostNum >= sufList[idx + 1].h) {
-
-        let newNetObj = {
-          n: null,
-          s: null,
-          h: null,
-        }
-        newNetObj.n = subNetObj.netName
-        newNetObj.s = sufObj.s
-        newNetObj.h = subNetObj.hostNum
-        subNetRangeArray.push(newNetObj)
-
+  // looping  sufLIST ARRAY to create an array of net Object told subNetRangeArray
+  sufList.forEach((sufObj, idx, sufList) => {
+      if (sufList[idx + 1]) {
+        subNetsNum.forEach((subNetObj) => {
+          if (sufObj.h >= subNetObj.hostNum && subNetObj.hostNum >= sufList[idx + 1].h) {
+            let newNetObj = {
+              n: null,
+              s: null,
+              h: null,
+            }
+            newNetObj.n = subNetObj.netName
+            newNetObj.s = sufObj.s
+            newNetObj.h = subNetObj.hostNum
+            subNetRangeArray.push(newNetObj)
+          }
+        })
       }
-    })
-  }
   });
     // console.log('subNetRangeArray',subNetRangeArray);
     // starting to divide the main Net  to  Sub nets
@@ -524,26 +531,26 @@ btn.addEventListener('click', (e) => {
   }
     //Ip Binary output ipBinary
     const ipBinary = document.querySelector('#ipBinary').children.item(1);
-  ipBinary.innerHTML = mainNetObj.ipBinary;
+      ipBinary.innerHTML = mainNetObj.ipBinary.toString().replaceAll(",",".");
    //hosts output
-   const hostOutput = document.querySelector('#host').children.item(1);
-   hostOutput.innerHTML = mainNetObj.hosts
+    const hostOutput = document.querySelector('#host').children.item(1);
+      hostOutput.innerHTML = mainNetObj.hosts
    //subMask  output
-   const subMaskDec = document.querySelector('#subMaskDec').children.item(1);
-   subMaskDec.innerHTML = mainNetObj.NetMask
+    const subMaskDec = document.querySelector('#subMaskDec').children.item(1);
+      subMaskDec.innerHTML = mainNetObj.NetMask.toString().replaceAll(",", ".");
    // IpBinary Output
    const netMaskBin = document.querySelector('#netMaskBin').children.item(1);
-   netMaskBin.innerHTML = mainNetObj.NetMaskBinary;
+    netMaskBin.innerHTML = mainNetObj.NetMaskBinary.toString().replaceAll(",",".");
    //Net Address Output
 
    const netId = document.querySelector('#netId').children.item(1);
-   netId.innerHTML = mainNetObj.netAddress;
+    netId.innerHTML = mainNetObj.netAddress.toString().replaceAll(",",".");
    // Net Masks   output
-   const netAddBin = document.querySelector('#netAddBin').children.item(1);
-   netAddBin.innerHTML = mainNetObj.netAddBin;
+    const netAddBin = document.querySelector('#netAddBin').children.item(1);
+      netAddBin.innerHTML = mainNetObj.netAddBin.toString().replaceAll(",",".");
    // Broadcast output
    const broadcastOutput = document.querySelector('#broadcast').children.item(1);
-   broadcastOutput.innerHTML = mainNetObj.broadcast;
+    broadcastOutput.innerHTML = mainNetObj.broadcast.toString().replaceAll(",",".");
  
 
 
@@ -572,63 +579,61 @@ btn.addEventListener('click', (e) => {
         }
         return 0;
       });
-
-
-    const calculationResult = getSubNets(subNetsNumSort, hostSuffixList(mainIp.suffix), mainIp.ip);
+    
+    const calculationResult0 = getSubNets(subNetsNumSort, hostSuffixList(mainIp.suffix), mainIp.ip);
+    // to remove the repeted elment in array  
+    let calculationResult = [...new Set(calculationResult0)]
     console.log(calculationResult);
     
       calculationResult.forEach(element=>{
 
       const netName = document.createElement("th")
-      netName.classList.add('netName')
-      netName.innerText = 'subNet Name :'
+        netName.classList.add('netName')
+        netName.innerText = 'subNet Name :'
       const netNameResult =document.createElement("td")
-      netNameResult.innerText = element.netName
+        netNameResult.innerText = element.netName
 
       const host =document.createElement("th")
-      host.innerText = 'Hosts Number :'
+        host.innerText = 'Hosts Number :'
       const hostResult =document.createElement("td")
-      hostResult.innerHTML = element.host
+        hostResult.innerHTML = element.host
       const suffix =document.createElement("th")
-      suffix.innerText = 'suffix Number :'
+        suffix.innerText = 'suffix Number :'
       const suffixResult =document.createElement("td")
-      suffixResult.innerHTML = element.suffix
+        suffixResult.innerHTML = element.suffix
       const NetId =document.createElement("th")
-      NetId.innerText = 'Net address :'
+        NetId.innerText = 'Net address :'
       const NetIdResult =document.createElement("td")
-      NetIdResult.innerHTML = element.netId
+        NetIdResult.innerHTML = element.netId.toString().replaceAll(",", ".");
       const BroadCast =document.createElement("th")
-      BroadCast.innerText = 'BroadCast : '
+        BroadCast.innerText = 'BroadCast : '
       const BroadcastResult =document.createElement("td")
-      BroadcastResult.innerHTML = element.broadcastDisemal
-      let tr1 = document.createElement("tr")
-      let tr2 = document.createElement("tr")
+        BroadcastResult.innerHTML = element.broadcastDisemal.toString().replaceAll(",", ".");
+        let tr1 = document.createElement("tr");
+        let tr2 = document.createElement("tr");
 
       const subNetItem =document.createElement("table")
-      subNetItem.classList.add('subNetItem');
-      subNetItem.classList.add('table');
+        subNetItem.classList.add('subNetItem');
+        subNetItem.classList.add('table');
 
-      const resultContainer = document.querySelector('.resultContainer')
+      const resultContainer = document.querySelector('.resultContainer');
 
-      resultContainer.append(subNetItem)
-      subNetItem.append(tr1);
-      subNetItem.append(tr2);
-      tr1.append(netName);
-      tr2.append(netNameResult);
+        resultContainer.append(subNetItem)
+        subNetItem.append(tr1);
+        subNetItem.append(tr2);
+        tr1.append(netName);
+        tr2.append(netNameResult);
 
-      tr1.append(host);
-      tr2.append(hostResult);
+        tr1.append(host);
+        tr2.append(hostResult);
 
-      tr1.append(suffix);
-      tr2.append(suffixResult);
-      tr1.append(NetId);
-      tr2.append(NetIdResult);
+        tr1.append(suffix);
+        tr2.append(suffixResult);
+        tr1.append(NetId);
+        tr2.append(NetIdResult);
 
-      tr1.append(BroadCast);
-      tr2.append(BroadcastResult);
-
-
-
+        tr1.append(BroadCast);
+        tr2.append(BroadcastResult);
       })
 
   }
